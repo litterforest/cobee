@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>admin</artifactId>
 	<packaging>war</packaging>
-	<description>后台管理系统</description>
+	<description>后台管理系统,这是在github上修改</description>
 	<name>admin Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
