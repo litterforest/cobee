@@ -20,7 +20,7 @@ public class TestController {
 	@RequestMapping(value="test")
 	public String test() throws Exception
 	{
-		return "";
+		return "modules/test/test";
 	}
 	
 }
