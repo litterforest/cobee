@@ -6,16 +6,14 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- 加载配置属性文件 -->
-	<context:property-placeholder ignore-unresolvable="true" location="classpath:cobee.properties" />
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:admin.properties" />
 
 	<!-- 应用级缓存配置 -->
 	<bean id="cacheManager"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="false" >
 		<property name="configLocation" value="classpath:${ehcache.conf}" />
 	</bean>
-	
-	<!-- 应用级ID生成器，shiro和系统组件会使用到 -->
-	<bean id="cobeeIdGenerator" class="com.cobee.admin.common.util.CobeeIdGenerator" lazy-init="false" >
-	</bean>
+
+	<import resource="applicationContext-shiro.xml" />
 
 </beans>
