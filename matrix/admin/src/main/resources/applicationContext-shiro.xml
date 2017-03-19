@@ -3,25 +3,48 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" default-lazy-init="true">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd" default-lazy-init="true" >
 
 	<description>Shiro Configuration</description>
 	
 	<!-- 定义授权缓存管理器 -->
-<!-- 	<bean id="shiroCacheManager" class="com.jeeplus.common.security.shiro.cache.SessionCacheManager" /> -->
-	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager" depends-on="cacheManager" >
 		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
 	
-	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<!-- shiro的核对象，是整个框架业务功能的实现者 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="shiroCacheManager"/>
+        <!-- <property name="realm" ref="jdbcRealm"/> -->
+    </bean>
+	
+	<!-- shiro跟spring容器集成的配置 -->
+	<!-- spring容器自动调用shiro对象的生命周期方法，如init()和destroy() -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 	
-	<!-- AOP式方法级权限检查  -->
+	<!-- 允许在spring容器中的组件使用shiro的注解来检测权限  -->
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
 		<property name="proxyTargetClass" value="true" />
 	</bean>
-<!-- 	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
     	<property name="securityManager" ref="securityManager"/>
-	</bean> -->
+	</bean>
+	<!-- shiro跟spring容器集成的配置 -->
+	
+	<!-- 定义认证过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login.html"/>
+        <property name="successUrl" value="/"/>
+        <property name="unauthorizedUrl" value="/unauthorized"/>
+        <property name="filterChainDefinitions">
+            <value>
+            	/login = anon
+            	/doLogin = anon
+                /static/** = anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
 	
 </beans>
