@@ -12,10 +12,20 @@
 		<property name="cacheManager" ref="cacheManager"/>
 	</bean>
 	
+	<bean id="sampleRealm" class="com.cobee.admin.modules.sys.security.SampleRealm" >
+		<property name="credentialsMatcher" >
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" >
+				<property name="hashAlgorithmName" value="SHA-512"></property>
+				<property name="hashIterations" value="31"></property>
+				<property name="hashSalted" value="true" ></property>
+			</bean>
+		</property>
+	</bean>
+	
 	<!-- shiro的核对象，是整个框架业务功能的实现者 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="cacheManager" ref="shiroCacheManager"/>
-        <!-- <property name="realm" ref="jdbcRealm"/> -->
+        <property name="realm" ref="sampleRealm"/>
     </bean>
 	
 	<!-- shiro跟spring容器集成的配置 -->
@@ -41,6 +51,7 @@
             <value>
             	/login = anon
             	/doLogin = anon
+            	/logout = logout
                 /static/** = anon
                 /** = authc
             </value>

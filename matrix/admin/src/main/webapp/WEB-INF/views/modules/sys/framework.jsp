@@ -743,7 +743,7 @@
 			                        </li>
 			                    </ul>
 			                </div>
-			                <a href="#" class="roll-nav roll-right CB_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+			                <a href="${ctx }/logout" class="roll-nav roll-right CB_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
 			            	</div>
 						<!-- /.breadcrumb -->
 
