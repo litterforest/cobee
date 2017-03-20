@@ -14,13 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 @Controller
-@RequestMapping("Test")
+@RequestMapping("test")
 public class TestController {
 	
 	@RequestMapping(value="test")
 	public String test() throws Exception
 	{
 		return "modules/test/test";
+	}
+	
+	@RequestMapping(value="jqgrid")
+	public String jqgrid() throws Exception
+	{
+		return "modules/test/jqgrid";
 	}
 	
 }

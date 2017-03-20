@@ -62,7 +62,7 @@ public class AuthenticationController extends BaseController {
             	return "modules/sys/login";
             }
         }
-		return "redirect:/framework.html";
+		return "redirect:/";
 	}
 	
 	/**
@@ -79,6 +79,12 @@ public class AuthenticationController extends BaseController {
 	public String framework() throws Exception
 	{
 		return "modules/sys/framework";
+	}
+	
+	@RequestMapping(value = "welcome")
+	public String welcome() throws Exception
+	{
+		return "modules/sys/welcome";
 	}
 	
 	

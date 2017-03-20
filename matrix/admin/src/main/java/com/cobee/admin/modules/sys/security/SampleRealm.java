@@ -52,7 +52,7 @@ public class SampleRealm extends AuthenticatingRealm {
 		{
 			credentials = "612f1c06e2092d739c04fb00588c5b940889afb18b69bd2b83de02edfc8caf1158f8f904de50c81aa83e3388724eb97b16fdf8d211a0f8840f7f3fe116e7534b";
 		}
-		// 5, 返回AuthenticationInfo对象,参数使用数据库中数据
+		// 5, 返回AuthenticationInfo对象,参数使用数据库中数据，shiro会根据这个对象与传进来的token对象进行比对。
 		ByteSource salt = ByteSource.Util.bytes("admin");
 		AuthenticationInfo authenticationInfo = null;
 		authenticationInfo = new SimpleAuthenticationInfo(username, credentials, salt, getName());
@@ -61,8 +61,10 @@ public class SampleRealm extends AuthenticatingRealm {
 
 	public static void main(String[] args) {
 		ByteSource salt = ByteSource.Util.bytes("admin");
-		System.out.println(new SimpleHash("SHA-512", "123456", salt, 31));
-		HashedCredentialsMatcher hcm = new HashedCredentialsMatcher();
+		SimpleHash sh = new SimpleHash("SHA-512", "123456", salt, 31);
+		System.out.println(sh.toBase64());
+		System.out.println(sh.toHex());
+		System.out.println(sh.toString());
 	}
 	
 }
