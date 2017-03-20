@@ -22,10 +22,30 @@
 		</property>
 	</bean>
 	
+	<bean id="sampleRealm2" class="com.cobee.admin.modules.sys.security.SampleRealm2" >
+		<property name="credentialsMatcher" >
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" >
+				<property name="hashAlgorithmName" value="MD5"></property>
+				<property name="hashIterations" value="31"></property>
+				<property name="hashSalted" value="true" ></property>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- 多realm环境下的认证与权限器 -->
+	<bean id="modularRealmAuthenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator" >
+	</bean>
+	
 	<!-- shiro的核对象，是整个框架业务功能的实现者 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="cacheManager" ref="shiroCacheManager"/>
-        <property name="realm" ref="sampleRealm"/>
+        <property name="authenticator" ref="modularRealmAuthenticator" ></property>
+        <property name="realms">
+        	<list>
+				<ref bean="sampleRealm" />
+				<ref bean="sampleRealm2" />
+			</list>
+        </property>
     </bean>
 	
 	<!-- shiro跟spring容器集成的配置 -->
