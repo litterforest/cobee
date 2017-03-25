@@ -3,6 +3,9 @@
  */
 package com.cobee.admin.modules.sys.security;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,8 +16,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.credential.Sha512CredentialsMatcher;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthenticatingRealm;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 /** <pre>简单的用户认证数据处理例子</pre>
@@ -24,7 +31,7 @@ import org.apache.shiro.util.ByteSource;
  * @date 2017年3月19日 下午8:52:48
  *
  */
-public class SampleRealm extends AuthenticatingRealm {
+public class SampleRealm extends AuthorizingRealm {
 
 	/**
 	 * 
@@ -66,6 +73,23 @@ public class SampleRealm extends AuthenticatingRealm {
 		System.out.println(sh.toBase64());
 		System.out.println(sh.toHex());
 		System.out.println(sh.toString());
+	}
+
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection pc) {
+		// 1,获取用户信息
+		Object principal = pc.getPrimaryPrincipal();
+		// 2,查找用户相关的角色和权限
+		Set<String> roles = new HashSet<>();
+		roles.add("user");
+		if ("admin".equals(principal))
+		{
+			roles.add("admin");
+		}
+		// 3,返回SimpleAuthorizationInfo对象
+		SimpleAuthorizationInfo sai = new SimpleAuthorizationInfo();
+		sai.setRoles(roles);
+		return sai;
 	}
 	
 }

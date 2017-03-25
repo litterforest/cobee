@@ -20,32 +20,37 @@
 				<property name="hashSalted" value="true" ></property>
 			</bean>
 		</property>
+		<property name="authenticationCacheName" value="authenticationCache"></property>
+		<property name="authorizationCacheName" value="authorizationCache"></property>
 	</bean>
 	
-	<bean id="sampleRealm2" class="com.cobee.admin.modules.sys.security.SampleRealm2" >
-		<property name="credentialsMatcher" >
-			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" >
-				<property name="hashAlgorithmName" value="MD5"></property>
-				<property name="hashIterations" value="31"></property>
-				<property name="hashSalted" value="true" ></property>
-			</bean>
-		</property>
-	</bean>
+<!-- 	<bean id="sampleRealm2" class="com.cobee.admin.modules.sys.security.SampleRealm2" > -->
+<!-- 		<property name="credentialsMatcher" > -->
+<!-- 			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher" > -->
+<!-- 				<property name="hashAlgorithmName" value="MD5"></property> -->
+<!-- 				<property name="hashIterations" value="31"></property> -->
+<!-- 				<property name="hashSalted" value="true" ></property> -->
+<!-- 			</bean> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 	
 	<!-- 多realm环境下的认证与权限器 -->
-	<bean id="modularRealmAuthenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator" >
-	</bean>
+<!-- 	<bean id="modularRealmAuthenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator" > -->
+<!-- 	</bean> -->
 	
 	<!-- shiro的核对象，是整个框架业务功能的实现者 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="cacheManager" ref="shiroCacheManager"/>
-        <property name="authenticator" ref="modularRealmAuthenticator" ></property>
-        <property name="realms">
-        	<list>
-				<ref bean="sampleRealm" />
-				<ref bean="sampleRealm2" />
-			</list>
-        </property>
+<!--         <property name="authenticator" ref="modularRealmAuthenticator" ></property> -->
+<!--         <property name="realms"> -->
+<!--         	<list> -->
+<!-- 				<ref bean="sampleRealm" /> -->
+<!-- 				<ref bean="sampleRealm2" /> -->
+<!-- 			</list> -->
+<!--         </property> -->
+		<property name="realm" ref="sampleRealm" ></property>
+		<!-- 设置记住我有效时长，这里是二周 -->
+		<property name="rememberMeManager.cookie.maxAge" value="1209600"></property>
     </bean>
 	
 	<!-- shiro跟spring容器集成的配置 -->
@@ -66,13 +71,14 @@
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login.html"/>
         <property name="successUrl" value="/"/>
-        <property name="unauthorizedUrl" value="/unauthorized"/>
+        <property name="unauthorizedUrl" value="/unauthorized.html"/>
         <property name="filterChainDefinitions">
             <value>
             	/login = anon
             	/doLogin = anon
             	/logout = logout
                 /static/** = anon
+                /test/jqgrid.html = user
                 /** = authc
             </value>
         </property>

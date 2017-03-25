@@ -5,8 +5,10 @@ package com.cobee.admin.modules.sys.web;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -46,19 +48,33 @@ public class AuthenticationController extends BaseController {
 	}
 	
 	@RequestMapping(value = "doLogin", method = RequestMethod.POST)
-	public String doLogin(String username, String password, Model model) throws Exception
+	public String doLogin(String username, String password, String rememberMe, Model model) throws Exception
 	{
 		Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
+        	Throwable t = null;
+        	String msg = null;
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            token.setRememberMe(true);
+            if ("YES".equals(rememberMe))
+            {
+            	token.setRememberMe(true);
+            }
             try 
             {
                 currentUser.login(token);
             }
+            catch (LockedAccountException e) {
+            	t = e;
+            	msg = e.getMessage();
+            }
             catch (AuthenticationException e) {
-            	logger.error("", e);
-            	model.addAttribute("msg", e.getMessage());
+            	t = e;
+            	msg = "用户名或密码错误";
+            }
+            if (t != null)
+            {
+            	logger.error("", t);
+            	model.addAttribute("msg", msg);
             	return "modules/sys/login";
             }
         }

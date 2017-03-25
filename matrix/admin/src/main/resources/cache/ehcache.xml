@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache updateCheck="false" name="defaultCache">
 
-	<diskStore path="../temp/cobee/ehcache" />
+	<diskStore path="${catalina.home}/temp/cobee/ehcache" />
 
 	<!-- 默认缓存配置. -->
 	<defaultCache maxEntriesLocalHeap="100" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
 		overflowToDisk="true" maxEntriesLocalDisk="100000" />
+	
+	<cache name="authenticationCache" eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="0" maxEntriesLocalHeap="100" overflowToDisk="false" />
+	
+	<cache name="authorizationCache" eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="0" maxEntriesLocalHeap="100" overflowToDisk="false" />
 	
 	<!-- 系统缓存 -->
 	<cache name="sysCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
