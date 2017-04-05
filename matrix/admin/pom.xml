@@ -13,9 +13,15 @@
 	<description>后台管理系统</description>
 	<name>admin Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+	
 	<dependencies>
-
+		<dependency>
+		    <groupId>com.cobee</groupId>
+		    <artifactId>matrix</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
+	
 	<build>
 		<finalName>admin</finalName>
 		<plugins>
