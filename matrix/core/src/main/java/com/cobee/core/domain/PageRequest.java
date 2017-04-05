@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cobee.core.po;
+package com.cobee.core.domain;
 
 import java.io.Serializable;
 

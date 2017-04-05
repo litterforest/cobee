@@ -24,7 +24,4 @@ public abstract class BaseService<T extends CrudDao<? extends BaseEntity<? exten
 	@Autowired
 	protected T dao;
 	
-	@Autowired
-	protected SqlSessionFactory sqlSessionFactory;
-	
 }

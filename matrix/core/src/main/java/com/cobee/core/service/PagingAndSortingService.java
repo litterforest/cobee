@@ -16,7 +16,9 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cobee.core.dao.CrudDao;
 import com.cobee.core.entity.BaseEntity;
@@ -24,6 +26,9 @@ import com.cobee.core.entity.BaseEntity;
 public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEntity<? extends Serializable>, ? extends Serializable>>
 		extends BaseService<T> {
 
+	@Autowired
+	protected SqlSessionFactory sqlSessionFactory;
+	
 	private String getMapperNamespace() {
 		Type type = this.getClass().getGenericSuperclass();
 		ParameterizedType parameterizedType = (ParameterizedType) type;

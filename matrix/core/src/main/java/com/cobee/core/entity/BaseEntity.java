@@ -6,7 +6,7 @@ package com.cobee.core.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.cobee.core.po.PageRequest;
+import com.cobee.core.domain.PageRequest;
 
 /**
  * <pre></pre>
