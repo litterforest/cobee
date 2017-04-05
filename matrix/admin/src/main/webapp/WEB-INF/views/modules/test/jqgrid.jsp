@@ -58,11 +58,7 @@
 					<div class="page-content">
 						<div class="page-header">
 							<h1>
-								jqGrid
-								<small>
-									<i class="ace-icon fa fa-angle-double-right"></i>
-									Dynamic tables and grids using jqGrid plugin
-								</small>
+								订单列表
 							</h1>
 						</div><!-- /.page-header -->
 
@@ -226,8 +222,8 @@
 			
 					data: grid_data,
 					datatype: "local",
-					height: 250,
-					colNames:[' ', 'ID','Last Sales','Name', 'Stock', 'Ship via','Notes'],
+					height: 400,
+					colNames:[' ', 'ID','Last Sales','Name', 'Stock', 'Ship via','Notes','info','age','sex','info','age','sex','info','age','sex','info','age','sex'],
 					colModel:[
 						{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 							formatter:'actions', 
@@ -244,8 +240,20 @@
 						{name:'name',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
 						{name:'stock',index:'stock', width:70, editable: true,edittype:"checkbox",editoptions: {value:"Yes:No"},unformat: aceSwitch},
 						{name:'ship',index:'ship', width:90, editable: true,edittype:"select",editoptions:{value:"FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX"}},
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
+						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}}, 
 						{name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}} 
-					], 
+					],
 			
 					viewrecords : true,
 					rowNum:10,

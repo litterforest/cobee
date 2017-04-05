@@ -3,6 +3,7 @@
  */
 package com.cobee.admin.modules.sys.security;
 
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
