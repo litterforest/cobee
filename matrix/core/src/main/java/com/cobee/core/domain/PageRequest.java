@@ -68,6 +68,7 @@ public class PageRequest implements Serializable {
 	 */
 	public String getLimitClause()
 	{
+		if(currentPage == null || pageSize == null) return "";
 		return " LIMIT " + ((this.currentPage - 1) * this.pageSize) + "," + this.pageSize;
 	}
 	

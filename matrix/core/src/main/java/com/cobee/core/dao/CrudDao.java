@@ -99,7 +99,9 @@ public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extend
 	 * @param entity
 	 * @return 数据的记录数
 	 */
-	int count(T entity);
+	Integer count(T entity);
+	
+	Integer customizedCount(String countSQL);
 	
 	/**
 	 * <pre></pre>
