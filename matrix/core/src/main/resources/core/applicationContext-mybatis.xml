@@ -2,8 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:property-placeholder
+		ignore-unresolvable="true" location="classpath:core/db.properties" />
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		init-method="init" destroy-method="close">
@@ -41,24 +46,42 @@
 		<!-- 配置监控统计拦截的filters -->
 		<!-- <property name="filters" value="stat" /> -->
 	</bean>
-	
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
-        <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="com.cobee.core"/>
-        <property name="mapperLocations" value="classpath:core/mappings/**/*.xml"/>
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+	<bean id="vendorProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<prop key="Oracle">oracle</prop>
+				<prop key="MySQL">mysql</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+		<property name="properties" ref="vendorProperties" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.cobee.core" />
+		<property name="mapperLocations" value="classpath:core/mappings/**/*.xml" />
+		<property name="databaseIdProvider" ref="databaseIdProvider" ></property>
 		<property name="configLocation" value="classpath:core/mybatis-config.xml"></property>
-    </bean>
+	</bean>
 
-	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"  >
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <property name="basePackage" value="com.cobee.core.dao"/>
-        <property name="markerInterface" value="com.cobee.core.common.persistence.MyBatisMapperAware" ></property>
-    </bean>
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="basePackage" value="com.cobee.core.dao" />
+		<property name="markerInterface"
+			value="com.cobee.core.common.persistence.MyBatisMapperAware"></property>
+	</bean>
 
 </beans>

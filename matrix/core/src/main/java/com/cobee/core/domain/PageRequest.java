@@ -72,4 +72,28 @@ public class PageRequest implements Serializable {
 		return " LIMIT " + ((this.currentPage - 1) * this.pageSize) + "," + this.pageSize;
 	}
 	
+	/**
+	 * <pre>获取oracle分页Sql</pre>
+	 * @author 陈淦森
+	 * @version 1.0.1
+	 * @date 2017年4月6日
+	 *
+	 * @return
+	 */
+	public String getPagingFramework()
+	{
+		if(currentPage == null || pageSize == null) return "";
+		Integer startIdx = ((currentPage - 1) * pageSize) + 1;
+		Integer endIdx = currentPage * pageSize;
+		StringBuilder sbuff = new StringBuilder();
+		sbuff.append(" SELECT * FROM ");
+		sbuff.append(" ( ");
+		sbuff.append(" SELECT RESULTPAGE.*, ROWNUM RN ");
+		sbuff.append(" FROM (%s) RESULTPAGE ");
+		sbuff.append(" WHERE ROWNUM <= ").append(endIdx);
+		sbuff.append(" ) ");
+		sbuff.append(" WHERE RN >= ").append(startIdx);
+		return sbuff.toString();
+	}
+	
 }

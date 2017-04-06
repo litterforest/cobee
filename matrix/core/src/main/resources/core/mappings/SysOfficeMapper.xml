@@ -3,6 +3,14 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cobee.core.dao.sys.SysOfficeMapper" >
 	
+	<sql id="orderAndPagingClause" >
+		<if test="pageRequest != null and pageRequest.limitClause != null and pageRequest.limitClause != ''">
+			<if test="_databaseId == 'mysql'">
+<!-- 				${pageRequest.limitClause} -->
+			</if>
+		</if>
+	</sql>
+	
 	<select id="findAll" resultType="com.cobee.core.entity.sys.SysOffice" >
 		SELECT * FROM sys_office
 	</select>
@@ -20,9 +28,7 @@
 			</trim>
 		</where>
 		ORDER BY a.create_date desc
-		<if test="pageRequest != null and pageRequest.limitClause != null and pageRequest.limitClause != ''">
-			${pageRequest.limitClause}
-		</if>
+		<include refid="orderAndPagingClause"></include>
 	</select>
 	
 	<update id="update" parameterType="Object">

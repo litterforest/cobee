@@ -6,7 +6,9 @@ import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -43,7 +45,11 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 	}
 
 	public <E extends BaseEntity<? extends Serializable>> Page<E> findByPage(E paramObj) {
-		String selectID = getMapperNamespace() + "." + DEFAULT_PAGING_METHOD;
+		return this.findByPage(paramObj, DEFAULT_PAGING_METHOD);
+	}
+	
+	public <E extends BaseEntity<? extends Serializable>> Page<E> findByPage(E paramObj, String selectSqlID) {
+		String selectID = getMapperNamespace() + "." + selectSqlID;
 		SqlSession session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 		Configuration conf = session.getConfiguration();
 		MappedStatement ms = conf.getMappedStatement(selectID);
@@ -85,12 +91,75 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		page.setTotalPage(totalPage);
 		logger.debug("首页：" + firstPage + " 上一页：" + prePage + " 下一页：" + nextPage + " 尾页：" + lastPage + " 总记录数：" + totalCount);
 		// 2,获取分页的数据
-		paramObj.setPageRequest(pageRequest);
-		List<E> list = session.selectList(selectID, paramObj);
+		String databaseId = conf.getDatabaseId();
+		List<E> list = null;
+		if ("mysql".equalsIgnoreCase(databaseId))
+		{
+			paramObj.setPageRequest(pageRequest);
+			list = session.selectList(selectID, paramObj);
+		}
+		else if ("oracle".equalsIgnoreCase(databaseId))
+		{
+			paramObj.setPageRequest(pageRequest);
+			list = getOraclePagingContent(session, ms, paramObj);
+		}
 		page.setContent(list);
 		return page;
 	}
 
+	private <E extends BaseEntity<? extends Serializable>> List<E> getOraclePagingContent(SqlSession session, MappedStatement ms, E paramObj)
+	{
+		String pagingSql = paramObj.getPageRequest().getPagingFramework();
+		BoundSql bs = ms.getBoundSql(paramObj);
+		String nativeSql = bs.getSql();
+		pagingSql = String.format(pagingSql, nativeSql);
+		logger.debug("oracle pagingSql============>>>>:" + pagingSql);
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet resultSet = null;
+		List<E> list = new ArrayList<E>();
+		Class<E> entityClazz = (Class<E>) ms.getResultMaps().get(0).getType();
+		try {
+			conn = session.getConnection();
+			ps = conn.prepareStatement(pagingSql);
+			List<ParameterMapping> parameterMappingList = bs.getParameterMappings();
+			for (int i = 0; i < parameterMappingList.size(); i++) {
+				ParameterMapping pm = parameterMappingList.get(0);
+				ps.setObject(i + 1, PropertyUtils.getProperty(paramObj, pm.getProperty()));
+			}
+			resultSet = ps.executeQuery();
+			ResultSetMetaData metaData = resultSet.getMetaData(); 
+			while(resultSet.next())
+			{
+				E entity = entityClazz.newInstance();
+				for (int i = 0; i < metaData.getColumnCount(); i++)
+				{
+					String label = metaData.getColumnLabel(i + 1);
+					PropertyUtils.setProperty(entity, label, resultSet.getObject(label));
+				}
+				list.add(entity);
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+		} finally {
+			if (resultSet != null)
+			{
+				try {
+					resultSet.close();
+				} catch (SQLException e) {
+				}
+			}
+			if (ps != null)
+			{
+				try {
+					ps.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+		return list;
+	}
+	
 	private Integer doTotalCount(SqlSession session, String countSql, Object paramObj, List<ParameterMapping> parameterMappingList)
 	{
 		Connection conn = null;
