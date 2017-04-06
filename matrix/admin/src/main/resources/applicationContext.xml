@@ -15,9 +15,9 @@
 	</bean>
 
 <!-- 	<import resource="applicationContext-shiro.xml" /> -->
-	<import resource="applicationContext-mybatis.xml" />
+	<import resource="core/applicationContext-mybatis.xml" />
 	
-	<context:component-scan base-package="com.cobee.admin.modules">
+	<context:component-scan base-package="com.cobee.core.service,com.cobee.admin.modules">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	
