@@ -34,7 +34,7 @@ public class BaseTester {
 		SysOffice sysOffice = new SysOffice();
 		PageRequest pageRequest = new PageRequest(1, 5);
 		sysOffice.setPageRequest(pageRequest);
-		sysOffice.setName("财务");
+		sysOffice.setName("财务部");
 		sysOfficeService.findByPage(sysOffice);
 	}
 	
