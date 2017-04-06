@@ -1,7 +1,6 @@
 package com.cobee.core.service;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.Connection;
@@ -23,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cobee.core.dao.CrudDao;
+import com.cobee.core.domain.Page;
 import com.cobee.core.domain.PageRequest;
 import com.cobee.core.entity.BaseEntity;
 
@@ -42,7 +42,7 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		return parameterizedType.getActualTypeArguments()[0].getTypeName();
 	}
 
-	public <E extends BaseEntity<? extends Serializable>> List<E> findByPage(E paramObj) {
+	public <E extends BaseEntity<? extends Serializable>> Page<E> findByPage(E paramObj) {
 		String selectID = getMapperNamespace() + "." + DEFAULT_PAGING_METHOD;
 		SqlSession session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 		Configuration conf = session.getConfiguration();
@@ -67,17 +67,28 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		String countSql = "select count(1) " + sql.substring(fromIdx);
 		logger.debug("count sql no order by no limit>>>>>>>>>:" + countSql);
 		// 1.2,计算首页、上一页、下一页、尾页、总页
+		Page<E> page = new Page<E>();
 		Integer totalCount = doTotalCount(session, countSql, paramObj, bs.getParameterMappings());
+		if (totalCount == 0) return page;
 		Integer totalPage = (totalCount % pageRequest.getPageSize() == 0) ? (totalCount / pageRequest.getPageSize()) : ((totalCount / pageRequest.getPageSize()) + 1);
 		Integer firstPage = 1;
 		Integer prePage = (pageRequest.getCurrentPage() - 1) >= 1 ? (pageRequest.getCurrentPage() - 1) : 1;
 		Integer nextPage = (pageRequest.getCurrentPage() + 1) <= totalPage ? (pageRequest.getCurrentPage() + 1) : totalPage;
 		Integer lastPage = totalPage;
+		page.setFirstPage(firstPage);
+		page.setLastPage(lastPage);
+		page.setNextPage(nextPage);
+		page.setPageNo(pageRequest.getCurrentPage());
+		page.setPageSize(pageRequest.getPageSize());
+		page.setPrePage(prePage);
+		page.setTotalCount(totalCount);
+		page.setTotalPage(totalPage);
 		logger.debug("首页：" + firstPage + " 上一页：" + prePage + " 下一页：" + nextPage + " 尾页：" + lastPage + " 总记录数：" + totalCount);
 		// 2,获取分页的数据
 		paramObj.setPageRequest(pageRequest);
 		List<E> list = session.selectList(selectID, paramObj);
-		return list;
+		page.setContent(list);
+		return page;
 	}
 
 	private Integer doTotalCount(SqlSession session, String countSql, Object paramObj, List<ParameterMapping> parameterMappingList)

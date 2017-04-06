@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobee.core.dao.sys.SysOfficeMapper;
+import com.cobee.core.domain.Page;
 import com.cobee.core.entity.sys.SysOffice;
 import com.cobee.core.service.PagingAndSortingService;
 import com.cobee.core.service.sys.SysOfficeService;
@@ -26,7 +27,7 @@ public class SysOfficeServiceImpl extends PagingAndSortingService<SysOfficeMappe
 	
 	@Override
 	public List<SysOffice> findAll() {
-		List<SysOffice> list = this.findByPage(new SysOffice());
+		Page<SysOffice> list = this.findByPage(new SysOffice());
 		return dao.findAll();
 	}
 
@@ -38,12 +39,12 @@ public class SysOfficeServiceImpl extends PagingAndSortingService<SysOfficeMappe
 	@Transactional(value = "transactionManager", readOnly = false)
 	public void update(SysOffice sysOffice){
 		dao.update(sysOffice);
-		List<SysOffice> list = this.findByPage(sysOffice);
+		Page<SysOffice> list = this.findByPage(sysOffice);
 		System.out.println(list);
 	}
 
 	@Override
-	public List<SysOffice> findByPage(SysOffice sysOffice) {
+	public Page<SysOffice> findByPage(SysOffice sysOffice) {
 		return super.findByPage(sysOffice);
 	}
 	
