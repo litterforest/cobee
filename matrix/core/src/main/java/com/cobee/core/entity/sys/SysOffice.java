@@ -275,17 +275,5 @@ public class SysOffice extends BaseEntity<String> implements Serializable {
 				+ ", updateBy=" + updateBy + ", updateDate=" + updateDate + ", remarks=" + remarks + ", delFlag="
 				+ delFlag + "]";
 	}
-
-	@Override
-	public void preInsert() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void preUpdate() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

@@ -97,8 +97,28 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
 		this.pageRequest = pageRequest;
 	}
 
-	public abstract void preInsert();
+	/**
+	 * <pre>在具体的应用项目中实现，可以使用AOP的方式来做</pre>
+	 * @author 陈淦森
+	 * @version 1.0.1
+	 * @date 2017年4月7日
+	 *
+	 */
+	public void preInsert()
+	{
+		//TODO
+	}
 
-	public abstract void preUpdate();
+	/**
+	 * <pre>在具体的应用项目中实现，可以使用AOP的方式来做</pre>
+	 * @author 陈淦森
+	 * @version 1.0.1
+	 * @date 2017年4月7日
+	 *
+	 */
+	public void preUpdate()
+	{
+		//TODO
+	}
 
 }
