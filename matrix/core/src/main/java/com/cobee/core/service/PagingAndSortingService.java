@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cobee.core.common.util.PropertyHelper;
 import com.cobee.core.dao.CrudDao;
 import com.cobee.core.domain.Page;
 import com.cobee.core.domain.PageRequest;
@@ -76,20 +77,9 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		Page<E> page = new Page<E>();
 		Integer totalCount = doTotalCount(session, countSql, paramObj, bs.getParameterMappings());
 		if (totalCount == 0) return page;
-		Integer totalPage = (totalCount % pageRequest.getPageSize() == 0) ? (totalCount / pageRequest.getPageSize()) : ((totalCount / pageRequest.getPageSize()) + 1);
-		Integer firstPage = 1;
-		Integer prePage = (pageRequest.getCurrentPage() - 1) >= 1 ? (pageRequest.getCurrentPage() - 1) : 1;
-		Integer nextPage = (pageRequest.getCurrentPage() + 1) <= totalPage ? (pageRequest.getCurrentPage() + 1) : totalPage;
-		Integer lastPage = totalPage;
-		page.setFirstPage(firstPage);
-		page.setLastPage(lastPage);
-		page.setNextPage(nextPage);
-		page.setPageNo(pageRequest.getCurrentPage());
-		page.setPageSize(pageRequest.getPageSize());
-		page.setPrePage(prePage);
-		page.setTotalCount(totalCount);
-		page.setTotalPage(totalPage);
-		logger.debug("首页：" + firstPage + " 上一页：" + prePage + " 下一页：" + nextPage + " 尾页：" + lastPage + " 总记录数：" + totalCount);
+		page.setPageNo(pageRequest.getCurrentPage()); page.setPageSize(pageRequest.getPageSize()); page.setTotalCount(totalCount);
+		logger.debug("首页：" + page.getFirstPage() + " 上一页：" + page.getPrePage() + " 下一页：" +
+		page.getNextPage() + " 尾页：" + page.getLastPage() + " 总页数："+ page.getTotalPage() +" 总记录数：" + page.getTotalCount());
 		// 2,获取分页的数据
 		String databaseId = conf.getDatabaseId();
 		List<E> list = null;
@@ -135,7 +125,7 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 				for (int i = 0; i < metaData.getColumnCount(); i++)
 				{
 					String label = metaData.getColumnLabel(i + 1);
-					PropertyUtils.setProperty(entity, label, resultSet.getObject(label));
+					PropertyHelper.setProperty(entity, label, resultSet.getObject(label));
 				}
 				list.add(entity);
 			}

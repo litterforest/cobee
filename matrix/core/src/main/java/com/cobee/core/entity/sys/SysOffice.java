@@ -36,7 +36,7 @@ public class SysOffice extends BaseEntity<String> implements Serializable {
 	private Date updateDate;// '更新时间',
 	private String remarks;// '备注信息',
 	private String delFlag;// '删除标记',
-
+	
 	public SysOffice() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -46,6 +46,17 @@ public class Page<T> implements Serializable {
 	private Integer lastPage; // 尾页
 	private Integer totalPage; // 总页数
 	private List<T> content; // 返回的查询结果集
+	
+	public Page() {
+		super();
+	}
+	
+	public Page(Integer pageNo, Integer pageSize, Integer totalCount) {
+		super();
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+		this.totalCount = totalCount;
+	}
 
 	public Integer getPageNo() {
 		return pageNo;
@@ -80,7 +91,7 @@ public class Page<T> implements Serializable {
 	}
 
 	public Integer getFirstPage() {
-		return firstPage;
+		return new Integer(1);
 	}
 
 	public void setFirstPage(Integer firstPage) {
@@ -88,7 +99,7 @@ public class Page<T> implements Serializable {
 	}
 
 	public Integer getPrePage() {
-		return prePage;
+		return (getPageNo() - 1) >= 1 ? (getPageNo() - 1) : 1;
 	}
 
 	public void setPrePage(Integer prePage) {
@@ -96,7 +107,8 @@ public class Page<T> implements Serializable {
 	}
 
 	public Integer getNextPage() {
-		return nextPage;
+		Integer totalPage = getTotalPage();
+		return (getPageNo() + 1) <= totalPage ? (getPageNo() + 1) : totalPage;
 	}
 
 	public void setNextPage(Integer nextPage) {
@@ -104,7 +116,7 @@ public class Page<T> implements Serializable {
 	}
 
 	public Integer getLastPage() {
-		return lastPage;
+		return getTotalPage();
 	}
 
 	public void setLastPage(Integer lastPage) {
@@ -112,7 +124,7 @@ public class Page<T> implements Serializable {
 	}
 
 	public Integer getTotalPage() {
-		return totalPage;
+		return (totalCount % getPageSize() == 0) ? (totalCount / getPageSize()) : ((totalCount / getPageSize()) + 1);
 	}
 
 	public void setTotalPage(Integer totalPage) {
