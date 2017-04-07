@@ -8,4 +8,5 @@ import com.cobee.core.entity.sys.SysOffice;
 public interface SysOfficeMapper extends CrudDao<SysOffice, String>, MyBatisMapperAware {
 
 	
+	
 }

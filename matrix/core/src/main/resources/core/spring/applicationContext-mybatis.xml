@@ -72,9 +72,9 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="com.cobee.core" />
-		<property name="mapperLocations" value="classpath:core/mappings/**/*.xml" />
+		<property name="mapperLocations" value="classpath:core/mybatis/mappings/**/*.xml" />
 		<property name="databaseIdProvider" ref="databaseIdProvider" ></property>
-		<property name="configLocation" value="classpath:core/mybatis-config.xml"></property>
+		<property name="configLocation" value="classpath:core/mybatis/mybatis-config.xml"></property>
 	</bean>
 
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">

@@ -108,6 +108,7 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
 		List<E> list = new ArrayList<E>();
+		// 从mybatis框架中获取查询的结果类型
 		Class<E> entityClazz = (Class<E>) ms.getResultMaps().get(0).getType();
 		try {
 			conn = session.getConnection();
