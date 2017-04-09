@@ -15,6 +15,6 @@ import com.cobee.core.service.PagingAndSortingService;
  *
  */
 //@Service
-public class SysOfficeServiceImpl extends PagingAndSortingService<SysOfficeMapper, SysOffice, String> {
+public class SysOfficeService extends PagingAndSortingService<SysOfficeMapper, SysOffice, String> {
 	
 }
