@@ -29,8 +29,8 @@ import com.cobee.core.domain.Page;
 import com.cobee.core.domain.PageRequest;
 import com.cobee.core.entity.BaseEntity;
 
-public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEntity<? extends Serializable>, ? extends Serializable>>
-		extends BaseService<T> {
+public abstract class PagingAndSortingService<T extends CrudDao<D, ID>, D extends BaseEntity<ID>, ID extends Serializable>
+		extends CrudService<T, D, ID> {
 
 	private static final Logger logger = LoggerFactory.getLogger(PagingAndSortingService.class);
 	
@@ -45,11 +45,11 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		return parameterizedType.getActualTypeArguments()[0].getTypeName();
 	}
 
-	public <E extends BaseEntity<? extends Serializable>> Page<E> findByPage(E paramObj) {
+	public Page<D> findByPage(D paramObj) {
 		return this.findByPage(paramObj, DEFAULT_PAGING_METHOD);
 	}
 	
-	public <E extends BaseEntity<? extends Serializable>> Page<E> findByPage(E paramObj, String selectSqlID) {
+	public Page<D> findByPage(D paramObj, String selectSqlID) {
 		String selectID = getMapperNamespace() + "." + selectSqlID;
 		SqlSession session = SqlSessionUtils.getSqlSession(sqlSessionFactory);
 		Configuration conf = session.getConfiguration();
@@ -74,7 +74,7 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		String countSql = "select count(1) " + sql.substring(fromIdx);
 		logger.debug("count sql no order by no limit>>>>>>>>>:" + countSql);
 		// 1.2,计算首页、上一页、下一页、尾页、总页
-		Page<E> page = new Page<E>();
+		Page<D> page = new Page<D>();
 		Integer totalCount = doTotalCount(session, countSql, paramObj, bs.getParameterMappings());
 		if (totalCount == 0) return page;
 		page.setPageNo(pageRequest.getCurrentPage()); page.setPageSize(pageRequest.getPageSize()); page.setTotalCount(totalCount);
@@ -82,7 +82,7 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		page.getNextPage() + " 尾页：" + page.getLastPage() + " 总页数："+ page.getTotalPage() +" 总记录数：" + page.getTotalCount());
 		// 2,获取分页的数据
 		String databaseId = conf.getDatabaseId();
-		List<E> list = null;
+		List<D> list = null;
 		if ("mysql".equalsIgnoreCase(databaseId))
 		{
 			paramObj.setPageRequest(pageRequest);
@@ -97,7 +97,7 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		return page;
 	}
 
-	private <E extends BaseEntity<? extends Serializable>> List<E> getOraclePagingContent(SqlSession session, MappedStatement ms, E paramObj)
+	private List<D> getOraclePagingContent(SqlSession session, MappedStatement ms, D paramObj)
 	{
 		String pagingSql = paramObj.getPageRequest().getPagingFramework();
 		BoundSql bs = ms.getBoundSql(paramObj);
@@ -107,9 +107,9 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet resultSet = null;
-		List<E> list = new ArrayList<E>();
+		List<D> list = new ArrayList<D>();
 		// 从mybatis框架中获取查询的结果类型
-		Class<E> entityClazz = (Class<E>) ms.getResultMaps().get(0).getType();
+		Class<D> entityClazz = (Class<D>) ms.getResultMaps().get(0).getType();
 		try {
 			conn = session.getConnection();
 			ps = conn.prepareStatement(pagingSql);
@@ -122,7 +122,7 @@ public abstract class PagingAndSortingService<T extends CrudDao<? extends BaseEn
 			ResultSetMetaData metaData = resultSet.getMetaData(); 
 			while(resultSet.next())
 			{
-				E entity = entityClazz.newInstance();
+				D entity = entityClazz.newInstance();
 				for (int i = 0; i < metaData.getColumnCount(); i++)
 				{
 					String label = metaData.getColumnLabel(i + 1);

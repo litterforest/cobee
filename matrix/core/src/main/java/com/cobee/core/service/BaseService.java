@@ -5,7 +5,6 @@ package com.cobee.core.service;
 
 import java.io.Serializable;
 
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cobee.core.dao.CrudDao;
@@ -19,9 +18,8 @@ import com.cobee.core.entity.BaseEntity;
  * @date 2017年4月5日
  *
  */
-public abstract class BaseService<T extends CrudDao<? extends BaseEntity<? extends Serializable>, ? extends Serializable>> {
+public abstract class BaseService {
 
-	@Autowired
-	protected T dao;
+	
 	
 }

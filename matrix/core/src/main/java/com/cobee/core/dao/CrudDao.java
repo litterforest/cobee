@@ -101,7 +101,7 @@ public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extend
 	 */
 	Integer count(T entity);
 	
-	Integer customizedCount(String countSQL);
+	//Integer customizedCount(String countSQL);
 	
 	/**
 	 * <pre></pre>

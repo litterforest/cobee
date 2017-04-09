@@ -48,12 +48,11 @@
 	</bean>
 
 	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"  >
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
-	<tx:annotation-driven transaction-manager="transactionManager"
-		proxy-target-class="true" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
 	<bean id="vendorProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -83,5 +82,5 @@
 		<property name="markerInterface"
 			value="com.cobee.core.common.persistence.MyBatisMapperAware"></property>
 	</bean>
-
+	
 </beans>
