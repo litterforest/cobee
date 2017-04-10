@@ -83,14 +83,13 @@ public abstract class PagingAndSortingService<T extends CrudDao<D, ID>, D extend
 		// 2,获取分页的数据
 		String databaseId = conf.getDatabaseId();
 		List<D> list = null;
+		paramObj.setPageRequest(pageRequest);
 		if ("mysql".equalsIgnoreCase(databaseId))
 		{
-			paramObj.setPageRequest(pageRequest);
 			list = session.selectList(selectID, paramObj);
 		}
 		else if ("oracle".equalsIgnoreCase(databaseId))
 		{
-			paramObj.setPageRequest(pageRequest);
 			list = getOraclePagingContent(session, ms, paramObj);
 		}
 		page.setContent(list);
