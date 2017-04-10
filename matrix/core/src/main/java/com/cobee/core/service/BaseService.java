@@ -3,13 +3,6 @@
  */
 package com.cobee.core.service;
 
-import java.io.Serializable;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.cobee.core.dao.CrudDao;
-import com.cobee.core.entity.BaseEntity;
-
 /** 
  * <pre>业务层的父类</pre>
  * 

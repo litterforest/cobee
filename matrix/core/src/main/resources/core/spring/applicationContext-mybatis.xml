@@ -79,8 +79,8 @@
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 		<property name="basePackage" value="com.cobee.core.dao" />
-		<property name="markerInterface"
-			value="com.cobee.core.common.persistence.MyBatisMapperAware"></property>
+		<property name="annotationClass"
+			value="com.cobee.core.common.persistence.annotation.DefaultDataSource"></property>
 	</bean>
 	
 </beans>

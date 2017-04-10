@@ -15,6 +15,17 @@ import com.cobee.core.entity.BaseEntity;
 public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extends Serializable> {
 
 	/**
+	 * <pre>持久化一个对象，门面方法，自动判断是新增还是更新</pre>
+	 * @author 陈淦森
+	 * @version 1.0.1
+	 * @date 2017年4月10日
+	 *
+	 * @param entity
+	 * @return
+	 */
+	int save(T entity);
+	
+	/**
 	 * <pre>保存一个实体对象</pre>
 	 * @author 陈淦森
 	 * @version 1.0.1
@@ -23,7 +34,7 @@ public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extend
 	 * @param entity
 	 * @return 返回新增记录的条数
 	 */
-	int save(T entity);
+	int insert(T entity);
 	
 	/**
 	 * <pre>保存一个实体对象, 有选择地创建字段数据</pre>
@@ -34,7 +45,7 @@ public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extend
 	 * @param entity
 	 * @return 返回新增记录的条数
 	 */
-	int saveBySelective(T entity);
+	int insertBySelective(T entity);
 	
 	/**
 	 * <pre>更新一个实体对象</pre>
@@ -104,7 +115,7 @@ public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extend
 	//Integer customizedCount(String countSQL);
 	
 	/**
-	 * <pre></pre>
+	 * <pre>根据ID删除数据记录</pre>
 	 * @author 陈淦森
 	 * @version 1.0.1
 	 * @date 2017年4月5日
@@ -114,7 +125,7 @@ public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extend
 	void deleteByID(ID id);
 	
 	/**
-	 * <pre>样式删除</pre>
+	 * <pre>根据给定的例子删除数据库记录</pre>
 	 * 
 	 * @author 陈淦森
 	 * @version 1.0.1
