@@ -12,7 +12,7 @@ import com.cobee.core.entity.BaseEntity;
  * @date 2017年4月5日
  *
  */
-public interface CrudDao<T extends BaseEntity<? extends Serializable>, ID extends Serializable> {
+public interface CrudDao<T extends BaseEntity<ID>, ID extends Serializable> {
 
 	/**
 	 * <pre>持久化一个对象，门面方法，自动判断是新增还是更新</pre>
