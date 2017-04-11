@@ -4,12 +4,14 @@
 package com.cobee.core.service;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobee.core.common.persistence.AuditorAware;
 import com.cobee.core.dao.CrudDao;
 import com.cobee.core.entity.BaseEntity;
 
@@ -29,6 +31,8 @@ public abstract class CrudService<T extends CrudDao<D, ID>, D extends BaseEntity
 
 	@Autowired
 	protected T dao;
+	@Autowired
+	private AuditorAware auditorAware;
 	
 	/**
 	 * <pre>持久化一个对象，门面方法，自动判断是新增还是更新</pre>
@@ -73,7 +77,7 @@ public abstract class CrudService<T extends CrudDao<D, ID>, D extends BaseEntity
 	@Transactional(readOnly = false)
 	public Integer insert(D entity)
 	{
-		entity.preInsert();
+		preInsert(entity);
 		return dao.insert(entity);
 	}
 	
@@ -89,7 +93,7 @@ public abstract class CrudService<T extends CrudDao<D, ID>, D extends BaseEntity
 	@Transactional(readOnly = false)
 	public Integer insertBySelective(D entity)
 	{
-		entity.preInsert();
+		preInsert(entity);
 		return dao.insertBySelective(entity);
 	}
 	
@@ -105,7 +109,7 @@ public abstract class CrudService<T extends CrudDao<D, ID>, D extends BaseEntity
 	@Transactional(readOnly = false)
 	public Integer update(D entity)
 	{
-		entity.preUpdate();
+		preUpdate(entity);
 		return dao.update(entity);
 	}
 	
@@ -121,7 +125,7 @@ public abstract class CrudService<T extends CrudDao<D, ID>, D extends BaseEntity
 	@Transactional(readOnly = false)
 	public Integer updateBySelective(D entity)
 	{
-		entity.preUpdate();
+		preUpdate(entity);
 		return dao.updateBySelective(entity);
 	}
 	
@@ -221,7 +225,24 @@ public abstract class CrudService<T extends CrudDao<D, ID>, D extends BaseEntity
 	@Transactional(readOnly = false)
 	public void deleteByLogic(D entity)
 	{
+		preUpdate(entity);
 		dao.deleteByLogic(entity);
+	}
+	
+	private void preInsert(D entity)
+	{
+		String createBy = auditorAware.getCurrentAuditor();
+		entity.setCreateBy(createBy);
+		entity.setCreateDate(new Date());
+		entity.setUpdateBy(createBy);
+		entity.setUpdateDate(new Date());
+	}
+	
+	private void preUpdate(D entity)
+	{
+		String updateBy = auditorAware.getCurrentAuditor();
+		entity.setUpdateBy(updateBy);
+		entity.setUpdateDate(new Date());
 	}
 	
 }

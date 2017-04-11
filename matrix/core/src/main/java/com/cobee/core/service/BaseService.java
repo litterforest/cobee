@@ -12,7 +12,5 @@ package com.cobee.core.service;
  *
  */
 public abstract class BaseService {
-
-	
 	
 }

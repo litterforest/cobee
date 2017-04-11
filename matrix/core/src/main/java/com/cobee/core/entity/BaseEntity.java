@@ -6,6 +6,10 @@ package com.cobee.core.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.cobee.core.common.persistence.annotation.CreatedBy;
+import com.cobee.core.common.persistence.annotation.CreatedDate;
+import com.cobee.core.common.persistence.annotation.LastModifiedBy;
+import com.cobee.core.common.persistence.annotation.LastModifiedDate;
 import com.cobee.core.domain.PageRequest;
 
 /**
@@ -24,9 +28,13 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
 	private static final long serialVersionUID = 6385104791618600696L;
 
 	private ID id;
+	@CreatedBy
 	private String createBy; // 创建者
+	@CreatedDate
 	private Date createDate; // 创建日期
+	@LastModifiedBy
 	private String updateBy; // 更新者
+	@LastModifiedDate
 	private Date updateDate; // 更新日期
 	private String delFlag; // 删除标记（0：正常；1：删除；2：审核）
 	private String remarks; // 备注
@@ -104,6 +112,7 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
 	 * @date 2017年4月7日
 	 *
 	 */
+	@Deprecated
 	public void preInsert()
 	{
 		//TODO
@@ -116,6 +125,7 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
 	 * @date 2017年4月7日
 	 *
 	 */
+	@Deprecated
 	public void preUpdate()
 	{
 		//TODO
