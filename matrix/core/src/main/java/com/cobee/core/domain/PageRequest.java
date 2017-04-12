@@ -24,6 +24,8 @@ public class PageRequest implements Serializable {
 
 	private Integer currentPage; // 当前页码
 	private Integer pageSize; // 一页显示记录的条数
+	
+	private String orderByClause; // 排序子句
 
 	public PageRequest() {
 		super();
@@ -94,6 +96,14 @@ public class PageRequest implements Serializable {
 		sbuff.append(" ) ");
 		sbuff.append(" WHERE RN >= ").append(startIdx);
 		return sbuff.toString();
+	}
+
+	public String getOrderByClause() {
+		return orderByClause;
+	}
+
+	public void setOrderByClause(String orderByClause) {
+		this.orderByClause = orderByClause;
 	}
 	
 }

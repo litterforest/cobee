@@ -4,11 +4,17 @@
 <mapper namespace="com.cobee.core.dao.sys.SysOfficeMapper" >
 	
 	<sql id="orderAndPagingClause" >
+<!-- 		排序子句 -->
+		<if test="pageRequest != null and pageRequest.orderByClause != null and pageRequest.orderByClause != ''">
+			${pageRequest.orderByClause}
+		</if>
+<!-- 		分页子句 -->
 		<if test="pageRequest != null and pageRequest.limitClause != null and pageRequest.limitClause != ''">
 			<if test="_databaseId == 'mysql'">
-<!-- 				${pageRequest.limitClause} -->
+				${pageRequest.limitClause}
 			</if>
 		</if>
+		
 	</sql>
 	
 	<select id="findAll" resultType="com.cobee.core.entity.sys.SysOffice" >
@@ -27,7 +33,6 @@
 				</if>
 			</trim>
 		</where>
-		ORDER BY a.create_date desc
 		<include refid="orderAndPagingClause"></include>
 	</select>
 	
