@@ -13,6 +13,8 @@
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="false" >
 		<property name="configLocation" value="classpath:${ehcache.conf}" />
 	</bean>
+	
+	<bean id="userIDAuditorAware" class="com.cobee.admin.common.persistence.auditing.UserIDAuditorAware" lazy-init="false" ></bean>
 
 <!-- 	<import resource="applicationContext-shiro.xml" /> -->
 	<import resource="core/spring/applicationContext-mybatis.xml" />

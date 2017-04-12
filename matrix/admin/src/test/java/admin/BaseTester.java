@@ -5,9 +5,14 @@ package admin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.cobee.core.domain.PageRequest;
+import com.cobee.core.entity.sys.SysOffice;
+import com.cobee.core.service.sys.SysOfficeService;
 
 /** <pre>基础测试</pre>
  * @author 陈淦森
@@ -20,17 +25,18 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class BaseTester {
 	
-//	@Autowired
-//	private SysOfficeService sysOfficeService;
+	@Autowired
+	private SysOfficeService sysOfficeService;
 	
 	@Test
 	public void test1()
 	{
-//		SysOffice sysOffice = new SysOffice();
-//		PageRequest pageRequest = new PageRequest(1, 5);
-//		sysOffice.setPageRequest(pageRequest);
-////		sysOffice.setName("财务部");
-//		sysOfficeService.findByPage(sysOffice);
+		SysOffice sysOffice = new SysOffice();
+		PageRequest pageRequest = new PageRequest(3, 5);
+		pageRequest.setOrderByClause(" ORDER BY a.create_by desc ");
+		sysOffice.setPageRequest(pageRequest);
+//		sysOffice.setName("财务部");
+		sysOfficeService.findByPage(sysOffice);
 	}
 	
 }
