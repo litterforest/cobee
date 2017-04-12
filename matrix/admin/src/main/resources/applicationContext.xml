@@ -14,6 +14,7 @@
 		<property name="configLocation" value="classpath:${ehcache.conf}" />
 	</bean>
 	
+<!-- 	审计人生成器，返回createBy和updateBy的值 -->
 	<bean id="userIDAuditorAware" class="com.cobee.admin.common.persistence.auditing.UserIDAuditorAware" lazy-init="false" ></bean>
 
 <!-- 	<import resource="applicationContext-shiro.xml" /> -->
