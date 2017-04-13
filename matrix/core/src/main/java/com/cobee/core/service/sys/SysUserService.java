@@ -5,8 +5,8 @@ package com.cobee.core.service.sys;
 
 import org.springframework.stereotype.Service;
 
-import com.cobee.core.dao.sys.SysOfficeMapper;
-import com.cobee.core.entity.sys.SysOffice;
+import com.cobee.core.dao.sys.SysUserMapper;
+import com.cobee.core.entity.sys.SysUser;
 import com.cobee.core.service.PagingAndSortingService;
 
 /** 
@@ -17,6 +17,6 @@ import com.cobee.core.service.PagingAndSortingService;
  *
  */
 @Service
-public class SysOfficeService extends PagingAndSortingService<SysOfficeMapper, SysOffice, String> {
+public class SysUserService extends PagingAndSortingService<SysUserMapper, SysUser, Integer> {
 	
 }

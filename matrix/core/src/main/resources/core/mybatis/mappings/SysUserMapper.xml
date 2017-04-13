@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobee.core.dao.sys.SysUserMapper" >
+	
+	<sql id="orderAndPagingClause" >
+<!-- 		排序子句 -->
+		<if test="pageRequest != null and pageRequest.orderByClause != null and pageRequest.orderByClause != ''">
+			${pageRequest.orderByClause}
+		</if>
+<!-- 		分页子句 -->
+		<if test="pageRequest != null and pageRequest.limitClause != null and pageRequest.limitClause != ''">
+			<if test="_databaseId == 'mysql'">
+				${pageRequest.limitClause}
+			</if>
+		</if>
+		
+	</sql>
+	
+	
+	
+</mapper>

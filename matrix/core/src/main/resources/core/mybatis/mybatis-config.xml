@@ -10,6 +10,7 @@
 
 	<typeAliases>
 		<typeAlias type="java.lang.Object" alias="Object" />
+		<typeAlias type="com.cobee.core.entity.sys.SysUser" alias="SysUser" />
 	</typeAliases>
 
 </configuration>
