@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.cobee.core.domain.PageRequest;
-import com.cobee.core.entity.sys.SysOffice;
-import com.cobee.core.service.sys.SysOfficeService;
+import com.cobee.core.entity.sys.SysUser;
+import com.cobee.core.service.sys.SysUserService;
 
 /** <pre>基础测试</pre>
  * @author 陈淦森
@@ -26,17 +26,17 @@ import com.cobee.core.service.sys.SysOfficeService;
 public class BaseTester {
 	
 	@Autowired
-	private SysOfficeService sysOfficeService;
+	private SysUserService sysUserService;
 	
 	@Test
 	public void test1()
 	{
-		SysOffice sysOffice = new SysOffice();
+		SysUser sysUser = new SysUser();
 		PageRequest pageRequest = new PageRequest(3, 5);
 		pageRequest.setOrderByClause(" ORDER BY a.create_by desc ");
-		sysOffice.setPageRequest(pageRequest);
-//		sysOffice.setName("财务部");
-		sysOfficeService.findByPage(sysOffice);
+		sysUser.setPageRequest(pageRequest);
+//		sysUser.setName("财务部");
+		sysUserService.findByPage(sysUser);
 	}
 	
 }
